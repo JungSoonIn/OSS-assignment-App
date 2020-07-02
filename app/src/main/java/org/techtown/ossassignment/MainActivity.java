@@ -3,6 +3,8 @@ package org.techtown.ossassignment;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
@@ -18,5 +20,25 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         resultText = findViewById(R.id.result_text);
+    }
+
+    public void buttonClick(View view) {
+        if (view.getId() == R.id.all_clear_button) {
+            isFirstInput = true;
+            resultNumber = 0;
+            operator = '+';
+            resultText.setTextColor(0xFF666666);
+            resultText.setText(String.valueOf(resultNumber));
+        }
+
+        if (view.getId() == R.id.num_1_button) {
+            if (isFirstInput) {
+                resultText.setTextColor(0xFF000000);
+                resultText.setText("1");
+                isFirstInput = false;
+            } else {
+                resultText.append("1");
+            }
+        }
     }
 }
