@@ -27,98 +27,76 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void buttonClick(View view) {
-        Button getButton = findViewById(view.getId());
-
-        Log.e("buttonClick", "default" + getButton.getText().toString() + "버튼이 클릭되었습니다.");
-
-
-
         switch (view.getId()) {
             case R.id.all_clear_button:
-                isFirstInput = true;
                 resultNumber = 0;
                 operator = '+';
-                resultText.setTextColor(0xFF666666);
-                resultText.setText(CLEAR_INPUT_TEXT);
+                setClearText("0");
                 break;
 
             case R.id.clear_entry_button:
-                isFirstInput = true;
-                resultText.setText(CLEAR_INPUT_TEXT);
+                setClearText("0");
                 break;
 
             case R.id.back_space_button:
-                if(resultText.getText().toString().length() > 1) {
+                if (resultText.getText().toString().length() > 1) {
                     String getResultText = resultText.getText().toString();
                     String subString = getResultText.substring(0, getResultText.length() - 1);
                     resultText.setText(subString);
-               } else {
-                    resultText.setTextColor(0xFF666666);
-                    resultText.setText(CLEAR_INPUT_TEXT);
-                    isFirstInput = true;
+                } else {
+                    setClearText("0");
                 }
                 break;
 
             case R.id.decimal_button:
                 break;
-
-            case R.id.Addition_button:
-            case R.id.subtraction_button:
-            case R.id.division_button:
-            case R.id.multiply_button:
-                int lastNum = Integer.parseInt(resultText.getText().toString());
-                if(operator == '+'){
-                    resultNumber = resultNumber + lastNum;
-                }else if(operator == '-') {
-                    resultNumber = resultNumber - lastNum;
-                }else if(operator == '/') {
-                    resultNumber = resultNumber / lastNum;
-                }else if(operator == '*') {
-                    resultNumber = resultNumber * lastNum;
-                }
-                operator = getButton.getText().toString().charAt(0);
-                resultText.setText(resultNumber + "");
-                isFirstInput = true;
-                break;
-
-            case R.id.result_button:
-                if(operator == '+'){
-                    resultNumber = resultNumber + Integer.parseInt(resultText.getText().toString());;
-                }else if(operator == '-') {
-                    resultNumber = resultNumber - Integer.parseInt(resultText.getText().toString());;
-                }else if(operator == '/') {
-                    resultNumber = resultNumber / Integer.parseInt(resultText.getText().toString());;
-                }else if(operator == '*') {
-                    resultNumber = resultNumber * Integer.parseInt(resultText.getText().toString());;
-                }
-                resultText.setText(resultNumber + "");
-                isFirstInput = true;
-                break;
-
-            case R.id.num_0_button:
-            case R.id.num_1_button:
-            case R.id.num_2_button:
-            case R.id.num_3_button:
-            case R.id.num_4_button:
-            case R.id.num_5_button:
-            case R.id.num_6_button:
-            case R.id.num_7_button:
-            case R.id.num_8_button:
-            case R.id.num_9_button:
-
-                if (isFirstInput) {
-                    resultText.setTextColor(0xFF000000);
-                    resultText.setText(getButton.getText().toString());
-                    isFirstInput = false;
-                } else {
-                    resultText.append(getButton.getText().toString());
-                }
-                break;
-
-            default:
-                //Toast.makeText(getApplicationContext(), getButton.getText().toString() + "버튼이 클릭되었습니다.", Toast.LENGTH_LONG).show();
-                break;
-
         }
+    }
+    public void setClearText(String clearText) {
+        isFirstInput = true;
+        resultText.setTextColor(0xFF666666);
+        resultText.setText(clearText);
+    }
+
+    public void numButtonClick(View view) {
+        Button getButton = findViewById(view.getId());
+        if (isFirstInput) {
+            resultText.setTextColor(0xFF000000);
+            resultText.setText(getButton.getText().toString());
+            isFirstInput = false;
+        } else {
+            resultText.append(getButton.getText().toString());
+        }
+    }
+
+    public void operatorClick(View view) {
+        Button getButton = findViewById(view.getId());
+
+        if (view.getId() == R.id.result_button) {
+            resultNumber = intCal(resultNumber, Integer.parseInt(resultText.getText().toString()), operator);
+            resultText.setText(resultNumber + "");
+            isFirstInput = true;
+        } else {
+            int lastNum = Integer.parseInt(resultText.getText().toString());
+
+            resultNumber = intCal(resultNumber, lastNum, operator);
+
+            operator = getButton.getText().toString().charAt(0);
+            resultText.setText(resultNumber + "");
+            isFirstInput = true;
+        }
+    }
+
+    public int intCal(int result, int lastNum, char operator) {
+        if (operator == '+') {
+            result = result + lastNum;
+        } else if (operator == '-') {
+            result = result - lastNum;
+        } else if (operator == '/') {
+            result = result / lastNum;
+        } else if (operator == '*') {
+            result = result * lastNum;
+        }
+        return result;
     }
 }
