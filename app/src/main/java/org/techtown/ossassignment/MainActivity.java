@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,22 +24,42 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void buttonClick(View view) {
-        if (view.getId() == R.id.all_clear_button) {
-            isFirstInput = true;
-            resultNumber = 0;
-            operator = '+';
-            resultText.setTextColor(0xFF666666);
-            resultText.setText(String.valueOf(resultNumber));
-        }
+        Button getButton = findViewById(view.getId());
 
-        if (view.getId() == R.id.num_1_button) {
-            if (isFirstInput) {
-                resultText.setTextColor(0xFF000000);
-                resultText.setText("1");
-                isFirstInput = false;
-            } else {
-                resultText.append("1");
-            }
+
+        switch (view.getId()) {
+            case R.id.all_clear_button:
+                isFirstInput = true;
+                resultNumber = 0;
+                operator = '+';
+                resultText.setTextColor(0xFF666666);
+                resultText.setText(String.valueOf(resultNumber));
+                break;
+
+            case R.id.num_0_button:
+            case R.id.num_1_button:
+            case R.id.num_2_button:
+            case R.id.num_3_button:
+            case R.id.num_4_button:
+            case R.id.num_5_button:
+            case R.id.num_6_button:
+            case R.id.num_7_button:
+            case R.id.num_8_button:
+            case R.id.num_9_button:
+
+                if (isFirstInput) {
+                    resultText.setTextColor(0xFF000000);
+                    resultText.setText(getButton.getText().toString());
+                    isFirstInput = false;
+                } else {
+                    resultText.append(getButton.getText().toString());
+                }
+                break;
+
+            default:
+                Toast.makeText(getApplicationContext(), getButton.getText().toString() + "버튼이 클릭되었습니다.", Toast.LENGTH_LONG).show();
+                break;
+
         }
     }
 }
