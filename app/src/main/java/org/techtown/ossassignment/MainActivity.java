@@ -3,6 +3,7 @@ package org.techtown.ossassignment;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -26,6 +27,9 @@ public class MainActivity extends AppCompatActivity {
     public void buttonClick(View view) {
         Button getButton = findViewById(view.getId());
 
+        Log.e("buttonClick", "default" + getButton.getText().toString() + "버튼이 클릭되었습니다.");
+
+
 
         switch (view.getId()) {
             case R.id.all_clear_button:
@@ -34,6 +38,22 @@ public class MainActivity extends AppCompatActivity {
                 operator = '+';
                 resultText.setTextColor(0xFF666666);
                 resultText.setText(String.valueOf(resultNumber));
+                break;
+
+            case R.id.Addition_button:
+                int lastNum = Integer.parseInt(resultText.getText().toString());
+                if(operator == '+'){
+                    resultNumber = resultNumber + lastNum;
+                }else if(operator == '-') {
+                    resultNumber = resultNumber - lastNum;
+                }else if(operator == '/') {
+                    resultNumber = resultNumber / lastNum;
+                }else if(operator == '*') {
+                    resultNumber = resultNumber * lastNum;
+                }
+                operator = '+';
+                resultText.setText(resultNumber + "");
+                isFirstInput = true;
                 break;
 
             case R.id.num_0_button:
@@ -57,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             default:
-                Toast.makeText(getApplicationContext(), getButton.getText().toString() + "버튼이 클릭되었습니다.", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), getButton.getText().toString() + "버튼이 클릭되었습니다.", Toast.LENGTH_LONG).show();
                 break;
 
         }
