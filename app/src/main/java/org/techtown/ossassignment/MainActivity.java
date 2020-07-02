@@ -15,6 +15,8 @@ public class MainActivity extends AppCompatActivity {
     int resultNumber = 0; //계산된 결과 값을 저장하는 변수
     char operator = '+'; // 입력된 연산자를 저장하는 변수
 
+    final String CLEAR_INPUT_TEXT = "0";
+
     TextView resultText;
 
     @Override
@@ -37,10 +39,33 @@ public class MainActivity extends AppCompatActivity {
                 resultNumber = 0;
                 operator = '+';
                 resultText.setTextColor(0xFF666666);
-                resultText.setText(String.valueOf(resultNumber));
+                resultText.setText(CLEAR_INPUT_TEXT);
+                break;
+
+            case R.id.clear_entry_button:
+                isFirstInput = true;
+                resultText.setText(CLEAR_INPUT_TEXT);
+                break;
+
+            case R.id.back_space_button:
+                if(resultText.getText().toString().length() > 1) {
+                    String getResultText = resultText.getText().toString();
+                    String subString = getResultText.substring(0, getResultText.length() - 1);
+                    resultText.setText(subString);
+               } else {
+                    resultText.setTextColor(0xFF666666);
+                    resultText.setText(CLEAR_INPUT_TEXT);
+                    isFirstInput = true;
+                }
+                break;
+
+            case R.id.decimal_button:
                 break;
 
             case R.id.Addition_button:
+            case R.id.subtraction_button:
+            case R.id.division_button:
+            case R.id.multiply_button:
                 int lastNum = Integer.parseInt(resultText.getText().toString());
                 if(operator == '+'){
                     resultNumber = resultNumber + lastNum;
@@ -51,7 +76,21 @@ public class MainActivity extends AppCompatActivity {
                 }else if(operator == '*') {
                     resultNumber = resultNumber * lastNum;
                 }
-                operator = '+';
+                operator = getButton.getText().toString().charAt(0);
+                resultText.setText(resultNumber + "");
+                isFirstInput = true;
+                break;
+
+            case R.id.result_button:
+                if(operator == '+'){
+                    resultNumber = resultNumber + Integer.parseInt(resultText.getText().toString());;
+                }else if(operator == '-') {
+                    resultNumber = resultNumber - Integer.parseInt(resultText.getText().toString());;
+                }else if(operator == '/') {
+                    resultNumber = resultNumber / Integer.parseInt(resultText.getText().toString());;
+                }else if(operator == '*') {
+                    resultNumber = resultNumber * Integer.parseInt(resultText.getText().toString());;
+                }
                 resultText.setText(resultNumber + "");
                 isFirstInput = true;
                 break;
